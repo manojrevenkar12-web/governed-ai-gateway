@@ -1,0 +1,26 @@
+providers:
+  primary: {kind: mock}
+  backup: {kind: mock}
+  openai-like: {kind: mock}
+models:
+  model-a:
+    providers: [primary, backup]
+    price_in: 2.0
+    price_out: 10.0
+  model-b:
+    providers: [primary]
+    price_in: 0.1
+    price_out: 0.5
+policies:
+  eng:
+    models: [model-a, model-b]
+    data: {personal: redact, financial: redact, secret: block}
+    max_output_tokens: 1000
+    tools: [search_docs, create_pull_request]
+    tools_requiring_approval: [create_pull_request]
+    rate: {requests_per_minute: 1000, tokens_per_minute: 10000000}
+  strict:
+    models: [model-b]
+    data: {personal: block, financial: block, secret: block}
+    max_output_tokens: 200
+    rate: {requests_per_minute: 5, tokens_per_minute: 100000}

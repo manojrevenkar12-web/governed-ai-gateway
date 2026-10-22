@@ -1,0 +1,328 @@
+{
+  "dlp": {
+    "development": {
+      "cases": 2000,
+      "per_kind": {
+        "iban": {
+          "planted": 325,
+          "found": 325,
+          "false_alarms": 0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        "card": {
+          "planted": 356,
+          "found": 356,
+          "false_alarms": 0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        "email": {
+          "planted": 350,
+          "found": 350,
+          "false_alarms": 0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        "phone": {
+          "planted": 314,
+          "found": 314,
+          "false_alarms": 0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        "secret": {
+          "planted": 346,
+          "found": 346,
+          "false_alarms": 0,
+          "precision": 1.0,
+          "recall": 1.0
+        }
+      },
+      "precision": 1.0,
+      "recall": 1.0,
+      "false_alarm_examples": []
+    },
+    "development_without_context_rules": {
+      "cases": 2000,
+      "per_kind": {
+        "iban": {
+          "planted": 325,
+          "found": 325,
+          "false_alarms": 0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        "card": {
+          "planted": 356,
+          "found": 356,
+          "false_alarms": 219,
+          "precision": 0.6191304347826087,
+          "recall": 1.0
+        },
+        "email": {
+          "planted": 350,
+          "found": 350,
+          "false_alarms": 0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        "phone": {
+          "planted": 314,
+          "found": 314,
+          "false_alarms": 0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        "secret": {
+          "planted": 346,
+          "found": 346,
+          "false_alarms": 0,
+          "precision": 1.0,
+          "recall": 1.0
+        }
+      },
+      "precision": 0.8853403141361257,
+      "recall": 1.0,
+      "false_alarm_examples": [
+        "card: '4191614610033077'",
+        "card: '4146730024589219'",
+        "card: '4142177436687591'",
+        "card: '4139551858317108'",
+        "card: '4355702838330144'",
+        "card: '4536232259794562'",
+        "card: '4381183730682551'",
+        "card: '4793737018023671'"
+      ]
+    },
+    "held_out": {
+      "cases": 1000,
+      "per_kind": {
+        "iban": {
+          "planted": 165,
+          "found": 165,
+          "false_alarms": 0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        "card": {
+          "planted": 163,
+          "found": 163,
+          "false_alarms": 1,
+          "precision": 0.9939024390243902,
+          "recall": 1.0
+        },
+        "email": {
+          "planted": 172,
+          "found": 172,
+          "false_alarms": 0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        "phone": {
+          "planted": 169,
+          "found": 169,
+          "false_alarms": 0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        "secret": {
+          "planted": 153,
+          "found": 153,
+          "false_alarms": 0,
+          "precision": 1.0,
+          "recall": 1.0
+        }
+      },
+      "precision": 0.9987849331713244,
+      "recall": 1.0,
+      "false_alarm_examples": [
+        "card: '57 7136 8440 8800'"
+      ]
+    }
+  },
+  "load": {
+    "8": {
+      "requests": 3000,
+      "concurrency": 8,
+      "provider_latency_ms": 40.0,
+      "ok": 3000,
+      "errors": 0,
+      "throughput_rps": 147.78296457625487,
+      "overhead_ms": {
+        "p50": 10.33,
+        "p95": 16.31,
+        "p99": 23.68,
+        "mean": 10.992926666666666
+      },
+      "end_to_end_ms": {
+        "p50": 52.82018700017943,
+        "p95": 59.75153800000044,
+        "p99": 68.8191019999067
+      },
+      "audit_entries_written": 3000
+    },
+    "32": {
+      "requests": 3000,
+      "concurrency": 32,
+      "provider_latency_ms": 40.0,
+      "ok": 3000,
+      "errors": 0,
+      "throughput_rps": 269.01544214196815,
+      "overhead_ms": {
+        "p50": 60.85,
+        "p95": 117.4,
+        "p99": 145.16,
+        "mean": 65.6712
+      },
+      "end_to_end_ms": {
+        "p50": 111.74447500002316,
+        "p95": 174.54954200002248,
+        "p99": 213.0602520001048
+      },
+      "audit_entries_written": 3000
+    }
+  },
+  "failover": {
+    "requests": 600,
+    "succeeded": 600,
+    "served_by": {
+      "primary": 0,
+      "backup": 600
+    },
+    "primary_breaker_open": true,
+    "p95_ms": 85.14392699999007
+  },
+  "budget_race": {
+    "reservations": {
+      "admitted": 210,
+      "refused_402": 90,
+      "spent_usd": 0.046806,
+      "budget_usd": 0.05,
+      "overspend_pct": 0.0
+    },
+    "check_then_spend": {
+      "admitted": 257,
+      "refused_402": 43,
+      "spent_usd": 0.05706,
+      "budget_usd": 0.05,
+      "overspend_pct": 14.1
+    }
+  },
+  "simulated_month": {
+    "total_spend": 187.385585,
+    "teams": [
+      {
+        "id": "payments-eng",
+        "name": "Payments Engineering",
+        "policy": "engineering",
+        "budget": 900.0,
+        "requests": 2954,
+        "users": 28,
+        "spend": 114.193439,
+        "ok": 2922,
+        "blocked": 7,
+        "over_budget": 0,
+        "redactions": 0,
+        "fallbacks": 151,
+        "forecast": 122.3501132142857,
+        "utilisation": 0.1268815988888889
+      },
+      {
+        "id": "platform-eng",
+        "name": "Platform Engineering",
+        "policy": "engineering",
+        "budget": 700.0,
+        "requests": 2044,
+        "users": 18,
+        "spend": 55.908811,
+        "ok": 2025,
+        "blocked": 12,
+        "over_budget": 0,
+        "redactions": 0,
+        "fallbacks": 96,
+        "forecast": 59.902297499999996,
+        "utilisation": 0.07986973
+      },
+      {
+        "id": "data",
+        "name": "Data & Analytics",
+        "policy": "engineering",
+        "budget": 12.0,
+        "requests": 735,
+        "users": 12,
+        "spend": 11.999771,
+        "ok": 643,
+        "blocked": 0,
+        "over_budget": 89,
+        "redactions": 0,
+        "fallbacks": 42,
+        "forecast": 12.8568975,
+        "utilisation": 0.9999809166666668
+      },
+      {
+        "id": "customer-ops",
+        "name": "Customer Operations",
+        "policy": "customer-operations",
+        "budget": 250.0,
+        "requests": 2498,
+        "users": 40,
+        "spend": 5.220203,
+        "ok": 2498,
+        "blocked": 0,
+        "over_budget": 0,
+        "redactions": 4449,
+        "fallbacks": 146,
+        "forecast": 5.593074642857143,
+        "utilisation": 0.020880812
+      },
+      {
+        "id": "marketing",
+        "name": "Marketing",
+        "policy": "marketing",
+        "budget": 2.0,
+        "requests": 305,
+        "users": 6,
+        "spend": 0.063361,
+        "ok": 288,
+        "blocked": 17,
+        "over_budget": 0,
+        "redactions": 0,
+        "fallbacks": 14,
+        "forecast": 0.0678867857142857,
+        "utilisation": 0.0316805
+      },
+      {
+        "id": "payments-ops",
+        "name": "Payments Operations",
+        "policy": "payments-restricted",
+        "budget": 50.0,
+        "requests": 436,
+        "users": 6,
+        "spend": 0.0,
+        "ok": 436,
+        "blocked": 0,
+        "over_budget": 0,
+        "redactions": 0,
+        "fallbacks": 0,
+        "forecast": 0.0,
+        "utilisation": 0.0
+      }
+    ],
+    "budget_exhausted": [
+      {
+        "team_id": "data",
+        "day": "2026-09-25",
+        "n": 89
+      }
+    ],
+    "provider_incident": [
+      {
+        "day": "2026-09-18",
+        "requests": 533,
+        "fallbacks": 449,
+        "failed": 35
+      }
+    ]
+  }
+}

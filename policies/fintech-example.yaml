@@ -1,0 +1,70 @@
+# Example policy for an internal AI platform at a regulated fintech. Every change to this file is a
+# pull request, reviewed by the platform team and, for data rules, by security and compliance.
+
+providers:
+  anthropic:
+    kind: anthropic
+    base_url: https://api.anthropic.com
+    api_key_env: ANTHROPIC_API_KEY
+  anthropic-backup:            # a second account or region, used when the first one fails
+    kind: anthropic
+    base_url: https://api.anthropic.com
+    api_key_env: ANTHROPIC_BACKUP_API_KEY
+  openai:
+    kind: openai
+    base_url: https://api.openai.com
+    api_key_env: OPENAI_API_KEY
+  local:                       # a self-hosted model inside the company network (OpenAI-compatible API)
+    kind: openai
+    base_url: http://llm.internal:8000
+    api_key_env: LOCAL_LLM_API_KEY
+
+models:
+  claude-sonnet-5-5:
+    providers: [anthropic, anthropic-backup]
+    price_in: 2.0
+    price_out: 10.0
+  claude-haiku-5-5:
+    providers: [anthropic, anthropic-backup]
+    price_in: 0.10
+    price_out: 0.50
+  claude-opus-5-5:
+    providers: [anthropic]
+    price_in: 4.0
+    price_out: 20.0
+  local-llm:
+    providers: [local]
+    price_in: 0.0
+    price_out: 0.0
+
+policies:
+  engineering:
+    description: AI-assisted coding and agentic workflows for product engineering teams.
+    models: [claude-sonnet-5-5, claude-haiku-5-5, claude-opus-5-5]
+    data: {personal: redact, financial: redact, secret: block}
+    max_output_tokens: 8192
+    tools: [search_docs, read_repository, create_pull_request, create_jira_ticket]
+    tools_requiring_approval: [create_pull_request]
+    rate: {requests_per_minute: 120, tokens_per_minute: 400000}
+
+  customer-operations:
+    description: Summarising and drafting replies to customer cases. Personal and banking data never leave the company.
+    models: [claude-haiku-5-5, claude-sonnet-5-5]
+    data: {personal: redact, financial: redact, secret: block}
+    max_output_tokens: 2048
+    tools: [search_knowledge_base]
+    rate: {requests_per_minute: 60, tokens_per_minute: 120000}
+
+  payments-restricted:
+    description: Work on real payment data, only with the self-hosted model.
+    models: [local-llm]
+    data: {personal: allow, financial: allow, secret: block}
+    max_output_tokens: 2048
+    rate: {requests_per_minute: 30, tokens_per_minute: 60000}
+
+  marketing:
+    description: Drafting public content. No customer data at all.
+    models: [claude-haiku-5-5]
+    data: {personal: block, financial: block, secret: block}
+    max_output_tokens: 4096
+    rate: {requests_per_minute: 30, tokens_per_minute: 60000}

@@ -1,0 +1,24 @@
+# Demo policy for docker compose: the same rules as the fintech example, with mock models standing in
+# for the providers, so the stack runs without any API key.
+providers:
+  anthropic: {kind: mock, options: {latency_ms: 30, keep_seen: false}}
+  anthropic-backup: {kind: mock, options: {latency_ms: 30, keep_seen: false}}
+  local: {kind: mock, options: {latency_ms: 10, keep_seen: false}}
+
+models:
+  claude-sonnet-5-5: {providers: [anthropic, anthropic-backup], price_in: 2.0, price_out: 10.0}
+  claude-haiku-5-5: {providers: [anthropic, anthropic-backup], price_in: 0.10, price_out: 0.50}
+  local-llm: {providers: [local], price_in: 0.0, price_out: 0.0}
+
+policies:
+  engineering:
+    models: [claude-sonnet-5-5, claude-haiku-5-5]
+    data: {personal: redact, financial: redact, secret: block}
+    max_output_tokens: 4096
+    tools: [search_docs, create_pull_request]
+    tools_requiring_approval: [create_pull_request]
+    rate: {requests_per_minute: 120, tokens_per_minute: 400000}
+  payments-restricted:
+    models: [local-llm]
+    data: {personal: allow, financial: allow, secret: block}
+    rate: {requests_per_minute: 30, tokens_per_minute: 60000}
